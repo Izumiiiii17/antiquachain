@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // Utilizing SQLite for MVP portability, switch to "postgresql" for prod
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  walletAddress String?   @unique
+  email         String?   @unique
+  name          String
+  avatar        String?
+  role          String    @default("buyer") // 'buyer', 'seller', 'admin'
+  rating        Float     @default(0.0)
+  reviewCount   Int       @default(0)
+  verified      Boolean   @default(false)
+  joinedAt      DateTime  @default(now())
+
+  listings      Listing[] @relation("SellerListings")
+  orders        Order[]   @relation("BuyerOrders")
+  soldOrders    Order[]   @relation("SellerOrders")
+  bids          Bid[]
+  offers        Offer[]
+  sentMessages  Message[]
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  slug     String    @unique
+  icon     String?
+  listings Listing[]
+}
+
+model Listing {
+  id                String    @id @default(uuid())
+  title             String
+  description       String
+  era               String
+  condition         String
+  type              String    // 'fixed', 'auction', 'offer'
+  price             Float
+  currency          String    @default("ETH")
+  priceUsd          Float     @default(0.0)
+  isVerified        Boolean   @default(false)
+  authenticityScore Float     @default(0.0)
+  artifactId        String    @unique // On-chain registered ID
+  location          String
+  tags              String
+  shipping          String
+  views             Int       @default(0)
+  watchlistCount    Int       @default(0)
+  categoryId        String
+  sellerId          String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Auction specific
+  auctionEndsAt     DateTime?
+  currentBid        Float?
+  bidCount          Int       @default(0)
+
+  // Relations
+  category   Category             @relation(fields: [categoryId], references: [id])
+  seller     User                 @relation("SellerListings", fields: [sellerId], references: [id])
+  images     ListingImage[]
+  provenance ArtifactProvenance[]
+  orders     Order[]
+  bids       Bid[]
+  offers     Offer[]
+}
+
+model ListingImage {
+  id        String  @id @default(uuid())
+  url       String
+  alt       String?
+  isPrimary Boolean @default(false)
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model ArtifactProvenance {
+  id        String   @id @default(uuid())
+  txHash    String   @unique
+  from      String
+  to        String
+  event     String   // 'minted', 'transferred', 'verified'
+  note      String?
+  timestamp DateTime
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Bid {
+  id        String   @id @default(uuid())
+  amount    Float
+  currency  String   @default("ETH")
+  timestamp DateTime @default(now())
+  listingId String
+  bidderId  String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  bidder    User     @relation(fields: [bidderId], references: [id], onDelete: Restrict)
+}
+
+model Offer {
+  id        String   @id @default(uuid())
+  amount    Float
+  currency  String   @default("ETH")
+  message   String?
+  status    String   @default("pending") // 'pending', 'accepted', 'rejected'
+  createdAt DateTime @default(now())
+  listingId String
+  buyerId   String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  buyer     User     @relation(fields: [buyerId], references: [id], onDelete: Restrict)
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  amount    Float
+  currency  String   @default("ETH")
+  status    String   @default("pending") // 'pending', 'paid', 'shipped', 'delivered', 'disputed'
+  escrowId  String?  @unique
+  txHash    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  listingId String
+  buyerId   String
+  sellerId  String
+  
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  buyer     User     @relation("BuyerOrders", fields: [buyerId], references: [id], onDelete: Restrict)
+  seller    User     @relation("SellerOrders", fields: [sellerId], references: [id], onDelete: Restrict)
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  content     String
+  type        String   @default("text") // 'text', 'offer'
+  offerAmount Float?
+  timestamp   DateTime @default(now())
+  senderId    String
+  sender      User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  // Expand with Conversation models later
+}

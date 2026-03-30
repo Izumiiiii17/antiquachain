@@ -1,0 +1,46 @@
+# Docker ignore file for AntiquaChain OpenEnv
+
+# Node.js artifacts (existing backend/frontend)
+node_modules/
+*/node_modules/
+*.log
+npm-debug.log*
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*/*.py[cod]
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Runtime outputs (don't bake into image)
+outputs/
+*.log
+
+# Existing project dirs not needed in the env container
+frontend/
+contracts/
+backend/
+
+# Env files (secrets should be injected at runtime)
+.env
+.env.*
+*.env

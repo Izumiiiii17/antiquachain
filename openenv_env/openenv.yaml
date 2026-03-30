@@ -1,0 +1,46 @@
+# AntiquaChain OpenEnv — Environment Manifest
+
+name: antiquachain-marketplace
+version: "1.0.0"
+description: >
+  An OpenEnv-compliant environment simulating a rare antique marketplace
+  (AntiquaChain). Agents learn to authenticate listings, price antiques
+  optimally, and negotiate multi-round deals — real-world tasks drawn from
+  the $50B global antique resale market.
+author: AntiquaChain
+license: MIT
+
+hardware:
+  tier: cpu-basic
+  vCPU: 2
+  RAM: 8GB
+
+tags:
+  - openenv
+  - marketplace
+  - negotiation
+  - pricing
+  - verification
+  - antiques
+  - real-world
+
+tasks:
+  - name: verify_listing
+    display_name: Antique Listing Verification
+    difficulty: easy
+    max_steps: 8
+
+  - name: optimal_pricing
+    display_name: Optimal Pricing Strategy
+    difficulty: medium
+    max_steps: 6
+
+  - name: negotiate_deal
+    display_name: End-to-End Deal Negotiation
+    difficulty: hard
+    max_steps: 10
+
+server:
+  port: 7860
+  framework: fastapi
+  entrypoint: "openenv_env.server.app:app"

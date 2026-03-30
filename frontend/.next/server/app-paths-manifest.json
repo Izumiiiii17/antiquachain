@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/create/page": "app/create/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/marketplace/page": "app/marketplace/page.js",
+  "/analytics/page": "app/analytics/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/page": "app/page.js",
+  "/listing/[id]/page": "app/listing/[id]/page.js",
+  "/verify/page": "app/verify/page.js",
+  "/wallet/page": "app/wallet/page.js"
+}

@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+
+  /* Light mode tokens */
+  --bg: #faf9f7;
+  --bg-secondary: #f2f0ec;
+  --surface: #ffffff;
+  --surface-hover: #f9f8f6;
+  --border: #e8e6e1;
+  --text-primary: #1c1c19;
+  --text-secondary: #57574f;
+  --text-muted: #888882;
+  --gold: #d97706;
+  --gold-light: #fbbf24;
+  --gold-bg: rgba(245, 158, 11, 0.08);
+  --gold-border: rgba(245, 158, 11, 0.25);
+}
+
+.dark {
+  --bg: #0f0f0e;
+  --bg-secondary: #1a1a18;
+  --surface: #1c1c1a;
+  --surface-hover: #242422;
+  --border: #2a2a27;
+  --text-primary: #f5f5f2;
+  --text-secondary: #b0b0ab;
+  --text-muted: #6b6b65;
+  --gold: #fbbf24;
+  --gold-light: #fcd34d;
+  --gold-bg: rgba(251, 191, 36, 0.06);
+  --gold-border: rgba(251, 191, 36, 0.2);
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-playfair);
+    letter-spacing: -0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection {
+    background: rgba(245, 158, 11, 0.3);
+    color: var(--text-primary);
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+}
+
+@layer components {
+  /* Gold gradient text */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #b45309 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Card styles */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: all 0.25s ease;
+  }
+
+  .card:hover {
+    border-color: var(--gold-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  .dark .card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  /* Gold button */
+  .btn-gold {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-gold:hover {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 0.625rem 1.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--gold-border);
+    background: var(--gold-bg);
+    color: var(--gold);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-gold {
+    background: var(--gold-bg);
+    color: var(--gold);
+    border: 1px solid var(--gold-border);
+  }
+
+  .badge-verified {
+    background: rgba(34,197,94,0.1);
+    color: #16a34a;
+    border: 1px solid rgba(34,197,94,0.25);
+  }
+
+  .badge-auction {
+    background: rgba(239,68,68,0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239,68,68,0.25);
+  }
+
+  .dark .badge-verified { color: #4ade80; background: rgba(74,222,128,0.1); }
+  .dark .badge-auction { color: #f87171; background: rgba(248,113,113,0.1); }
+
+  /* Input */
+  .input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 10px;
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+    font-family: var(--font-inter);
+  }
+
+  .input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-bg);
+  }
+
+  .input::placeholder { color: var(--text-muted); }
+
+  /* Gold border highlight */
+  .gold-ring { box-shadow: 0 0 0 2px var(--gold); }
+
+  /* Glass surface */
+  .glass {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+
+  .dark .glass {
+    background: rgba(28,28,26,0.75);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Blockchain timeline */
+  .provenance-line {
+    position: relative;
+  }
+
+  .provenance-line::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 30px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold) 0%, transparent 100%);
+  }
+
+  /* Auction blink */
+  .live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: blink 1.2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+  }
+
+  /* Shimmer loading */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--bg-secondary) 25%,
+      var(--surface) 50%,
+      var(--bg-secondary) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite;
+  }
+}
