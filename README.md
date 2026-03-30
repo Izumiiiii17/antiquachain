@@ -1,7 +1,7 @@
 ---
 title: AntiquaChain OpenEnv
 emoji: 🏺
-colorFrom: amber
+colorFrom: yellow
 colorTo: purple
 sdk: docker
 app_port: 7860
