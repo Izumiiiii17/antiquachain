@@ -79,10 +79,12 @@ def list_tasks() -> Dict[str, Any]:
 
 
 @app.post("/reset", response_model=AntiquaChainObservation)
-def reset(req: ResetRequest = ResetRequest()) -> AntiquaChainObservation:
+def reset(req: Optional[ResetRequest] = None) -> AntiquaChainObservation:
     """Start a new episode. Pass `task_name` to select a specific task."""
     try:
-        obs = _env.reset(task_name=req.task_name, seed=req.seed)
+        task_name = req.task_name if req else None
+        seed = req.seed if req else None
+        obs = _env.reset(task_name=task_name, seed=seed)
         return obs
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
